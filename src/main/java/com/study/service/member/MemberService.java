@@ -18,7 +18,7 @@ public class MemberService {
 		
 		return mapper.insert(member);
 	}
-	
+
 	public List<MemberDto> list() {
 		// TODO Auto-generated method stub
 		return mapper.selectAll();
@@ -38,17 +38,27 @@ public class MemberService {
 			e.printStackTrace();
 		}
 		
-		return cnt;
+		return cnt; 
 	}
 
 	public int remove(String id) {
 		return mapper.deleteById(id);
-		
 	}
 
 	public MemberDto getByEmail(String email) {
 		// TODO Auto-generated method stub
 		return mapper.selectByEmail(email);
 	}
-	
+
+	public MemberDto getByNickName(String nickName) {
+		// TODO Auto-generated method stub
+		return mapper.selectByNickName(nickName);
+	}
+
 }
+
+
+
+
+
+

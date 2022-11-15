@@ -33,6 +33,20 @@
 						<div id="userIdText1" class="form-text">아이디 중복확인을 해주세요.</div>
 						
 					</div>
+					
+					<div class= "mb-3">
+						<label for="" class= "form-label">
+							닉네임
+						</label>
+						
+						<div class= "input-group">
+							<input id= "nickNameInput1" class= "form-control" type= "text" name= "nickName">
+							<button id= "nickNameExistButton1" class= "btn btn-outline-secondary" type= "button"> 중복확인 </button>
+						</div>
+						
+						<div id= "nickNameText1" class= "form-text"> 닉네임 중복확인을 해주세요. </div>
+						
+					</div>
 
 					<div class="mb-3">
 						<label for="" class="form-label">
@@ -78,6 +92,8 @@ let availableId = false;
 let availableEmail = false;
 // 패스워드 사용 가능  
 let availablePassword = false; 
+// 닉네임 사용 가능
+let availableNickName = false;
 
 function enableSubmitButton() {
 	const button = document.querySelector("#submitButton1");
@@ -142,6 +158,26 @@ document.querySelector("#userIdExistButton1").addEventListener("click", function
 			}
 		}); 
 	
+});
+
+//닉네임 중복확인
+document.querySelector("nickNameExistButton1").addEventListener("click", function() {
+	availableNickName = false;
+	//입력된 별명을
+	const userId = document.querySelector("#nickNameInput1").value;
+	
+	//fetch 요청 보내고
+	fetch(ctx + "/member/existNickName" + userId)
+		.then(res => res.json())
+		.then(data => {
+			//응답 받아서 메세지 출력
+			document.querySelector("#nickNameText1").innerText = data.message;
+			
+			if (data.status == "not exist") {
+				availableNickName= true;
+				enableSubmitButton();
+			}
+		});
 });
 
 

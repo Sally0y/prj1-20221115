@@ -130,6 +130,20 @@ SELECT
 		id ;
 
 
+-- Member 테이블에 nickName 컬럼 추가
+ALTER TABLE Member
+ADD COLUMN nickName VARCHAR(255) NOT NULL UNIQUE DEFAULT id AFTER id;
+
+DESC Member;
+
+SELECT * FROM Member;
+
+
+
+
+
+
+
 
 
 
