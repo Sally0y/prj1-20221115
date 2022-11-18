@@ -138,6 +138,104 @@ DESC Member;
 
 SELECT * FROM Member;
 
+SET SQL_SAFE_UPDATES = 1;
+
+DELETE FROM Member
+WHERE id <> 'abcd';
+
+-- 게시물 작성자를 존재하는 Member.id로 변경
+UPDATE Board
+	SET writer = 'aa'
+WHERE
+	id > 0;
+
+-- Board.writer 가 Member.id 참조하도록 변경
+ALTER TABLE Board
+ADD FOREIGN KEY (writer) REFERENCES Member(id);
+
+-- 댓글 테이블에 작성자 추가
+ALTER TABLE Reply
+ADD COLUMN writer VARCHAR(255) NOT NULL DEFAULT 'aa' REFERENCES Member(id) AFTER content;
+ALTER TABLE Reply
+MODIFY COLUMN writer VARCHAR(255) NOT NULL;
+DESC Reply;
+
+SELECT * FROM Reply ORDER BY 1 DESC;
+
+-- 댓글이 수정 가능한 지 확인
+SELECT 
+		id,
+		boardId,
+		content,
+		writer,
+		(writer = 'bb') editable,
+		inserted
+	FROM
+		Reply
+	WHERE
+		boardId = 1064
+	ORDER BY
+		id DESC
+
+;
+-- 좋아요 테이블 만들기
+CREATE TABLE BoardLike (
+	boardId INT,
+    memberId VARCHAR(255),
+    PRIMARY KEY (boardId, memberId),
+    FOREIGN KEY (boardId) REFERENCES Board(id),
+    FOREIGN KEY (memberId) REFERENCES Member(id)
+);
+
+SELECT * FROM BoardLike;
+
+-- 좋아요 갯수, 좋아요 여부 포함된 게시물 조회
+SELECT
+		b.id,
+		b.title,
+		b.content,
+		b.writer,
+		b.inserted,
+		(SELECT COUNT(*) FROM BoardLike WHERE boardId = b.id) countLike,
+		f.id fileId,
+		f.name fileName
+	FROM
+		Board b LEFT JOIN File f ON b.id = f.boardId
+	WHERE
+		b.id = 1064;
+
+-- 권한테이블 만들기
+CREATE TABLE Authority (
+	memberId VARCHAR(255) NOT NULL REFERENCES Member(id),
+    auth VARCHAR(255) NOT NULL,
+    PRIMARY KEY (memberId, auth)
+);
+
+INSERT INTO Authority (memberId, auth)
+VALUES ('admin', 'admin');
+
+SELECT * FROM Authority;
+
+-- 권한테이블, 멤버테이블 조인 조회
+	SELECT 
+		id,
+		nickName,
+		password,
+		email,
+		inserted,
+        a.auth
+	FROM
+		Member m LEFT JOIN Authority a ON m.id = a.memberId
+	WHERE
+		id = 'admin';
+
+
+
+
+
+
+
+
 
 
 

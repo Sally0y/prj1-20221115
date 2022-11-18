@@ -7,10 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>welcome index file !!!</h1>
-	
+	<h1>welcome INDEX FILE!!!</h1>
 	<!-- div>a*3 -->
-	
 	<div>
 		<a href=""></a>
 		<a href=""></a>

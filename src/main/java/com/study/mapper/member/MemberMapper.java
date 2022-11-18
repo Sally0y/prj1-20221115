@@ -7,7 +7,7 @@ import com.study.domain.member.MemberDto;
 public interface MemberMapper {
 
 	int insert(MemberDto member);
-	
+
 	List<MemberDto> selectAll();
 
 	MemberDto selectById(String id);
